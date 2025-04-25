@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Load Okra Disease Detection Model
-model = tf.keras.models.load_model("okra_disease_cnn_finetuned.h5")
+model = tf.keras.models.load_model("okra_disease_cnn_finetuned.h5", compile=False)
 disease_classes = [
     "Healthy Leaves", "Alternaria Leaf Spot", "Cercospora Leaf Spot",
     "Downy Mildew", "Leaf Curl Virus", "Phyllosticta Leaf Spot"

@@ -1,4 +1,4 @@
-# Use official Python base image
+# Use official Python image
 FROM python:3.10-slim
 
 # Set environment variables
@@ -8,16 +8,23 @@ ENV PYTHONUNBUFFERED=1
 # Set working directory
 WORKDIR /app
 
-# Copy dependencies
+# Install system dependencies (optional but helps avoid common issues)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip and install Python dependencies
 COPY requirements.txt .
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy all files to working directory
+# Copy project files
 COPY . .
 
-# Expose the port your Flask app runs on
+# Expose the Flask port
 EXPOSE 5001
 
 # Run the Flask app
